@@ -160,8 +160,12 @@ export default function AdminDashboard() {
       }
     } else {
       // Secure local default admin credential check!
-      // Master Username: admin@yr.com, Master Password: admin123
-      if (email === 'digital@yr.com' && password === 'YR@2023') {
+      // Support both fallback sets: digital@yr.com/YR@2023 or admin@yr.com/admin123
+      const isLocalAdminValid = 
+        (email === 'digital@yr.com' && password === 'YR@2023') ||
+        (email === 'admin@yr.com' && password === 'admin123');
+
+      if (isLocalAdminValid) {
         setIsAdmin(true);
         localStorage.setItem('yr_admin_session', 'active');
       } else {
