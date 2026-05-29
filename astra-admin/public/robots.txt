@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Prevent indexing of administrative paths
+Disallow: /YRadmin/
+Disallow: /YRadmin
+
+Sitemap: https://yrdigital.com/sitemap.xml

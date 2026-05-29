@@ -1,0 +1,15 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/YRadmin",
+      "destination": "https://yradmin.yrdigital.com",
+      "permanent": true
+    },
+    {
+      "source": "/YRadmin/",
+      "destination": "https://yradmin.yrdigital.com",
+      "permanent": true
+    }
+  ]
+}
