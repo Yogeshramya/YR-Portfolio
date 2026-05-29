@@ -153,8 +153,7 @@ export default function AdminDashboard() {
 
     // 1. Check local mock credentials first (failsafe bypass, takes precedence)
     const isLocalAdminValid = 
-      (email === 'digital@yr.com' && password === 'YR@2023') ||
-      (email === 'admin@yr.com' && password === 'admin123');
+      (email === 'digital@yr.com' && password === 'YR@2023');
 
     if (isLocalAdminValid) {
       setIsAdmin(true);
