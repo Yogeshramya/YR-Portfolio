@@ -7,20 +7,27 @@ import { getFirestore } from 'firebase/firestore';
 // Reads dynamically from Vite environment variables (defined in your .env file).
 // If empty, the system automatically falls back to secure Local Sandbox Mode!
 // =========================================================================
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || ""
+// Clean utility to check and sanitize keys
+const cleanEnvValue = (val) => {
+  if (!val) return "";
+  const cleaned = val.trim().replace(/^["']|["']$/g, ''); // Strip leading/trailing double or single quotes
+  return cleaned === "" || cleaned.includes("YOUR_") ? "" : cleaned;
 };
 
-// Verify if the configuration keys are valid and not placeholders
+const firebaseConfig = {
+  apiKey: cleanEnvValue(import.meta.env.VITE_FIREBASE_API_KEY),
+  authDomain: cleanEnvValue(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN),
+  projectId: cleanEnvValue(import.meta.env.VITE_FIREBASE_PROJECT_ID),
+  storageBucket: cleanEnvValue(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET),
+  messagingSenderId: cleanEnvValue(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
+  appId: cleanEnvValue(import.meta.env.VITE_FIREBASE_APP_ID)
+};
+
+// Verify if the configuration keys are valid active credentials
 const isFirebaseConfigured = 
   firebaseConfig.apiKey && 
-  firebaseConfig.apiKey !== "" &&
-  !firebaseConfig.apiKey.includes("YOUR_");
+  firebaseConfig.authDomain && 
+  firebaseConfig.projectId;
 
 let app;
 let auth = null;
