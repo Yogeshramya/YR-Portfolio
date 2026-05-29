@@ -151,6 +151,18 @@ export default function AdminDashboard() {
     e.preventDefault();
     setAuthError('');
 
+    // 1. Check local mock credentials first (failsafe bypass, takes precedence)
+    const isLocalAdminValid = 
+      (email === 'digital@yr.com' && password === 'YR@2023') ||
+      (email === 'admin@yr.com' && password === 'admin123');
+
+    if (isLocalAdminValid) {
+      setIsAdmin(true);
+      localStorage.setItem('yr_admin_session', 'active');
+      return;
+    }
+
+    // 2. If not local credentials, authenticate via Google Firebase if configured
     if (isFirebaseConfigured && auth) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
@@ -159,18 +171,7 @@ export default function AdminDashboard() {
         setAuthError('Invalid administrator credentials.');
       }
     } else {
-      // Secure local default admin credential check!
-      // Support both fallback sets: digital@yr.com/YR@2023 or admin@yr.com/admin123
-      const isLocalAdminValid = 
-        (email === 'digital@yr.com' && password === 'YR@2023') ||
-        (email === 'admin@yr.com' && password === 'admin123');
-
-      if (isLocalAdminValid) {
-        setIsAdmin(true);
-        localStorage.setItem('yr_admin_session', 'active');
-      } else {
-        setAuthError('Invalid administrator credentials (local fallback).');
-      }
+      setAuthError('Invalid administrator credentials (local fallback).');
     }
   };
 
